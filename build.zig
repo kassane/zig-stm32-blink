@@ -24,7 +24,7 @@ pub fn build(b: *Builder) void {
     vector_obj.setBuildMode(mode);
 
     elf.addObject(vector_obj);
-    elf.setLinkerScriptPath("src/linker.ld");
+    elf.setLinkerScriptPath(std.build.FileSource{ .path = "src/linker.ld"});
 
     const bin = b.addInstallRaw(elf, "zig-stm32-blink.bin");
     const bin_step = b.step("bin", "Generate binary file to be flashed");
