@@ -1,4 +1,4 @@
-usingnamespace @import("main.zig");
+const main = @import("main.zig").main;
 
 // These symbols come from the linker script
 extern const _data_loadaddr: u32;

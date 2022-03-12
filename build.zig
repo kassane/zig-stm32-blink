@@ -3,12 +3,12 @@ const builtin = @import("builtin");
 const std = @import("std");
 
 pub fn build(b: *Builder) void {
-    // Target STM32F407VG
+    // Target STM32F103C8T6
     const target = .{
         .cpu_arch = .thumb,
-        .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m4 },
+        .cpu_model = .{ .explicit = &std.Target.arm.cpu.cortex_m3 },
         .os_tag = .freestanding,
-        .abi = .eabihf,
+        .abi = .eabi,
     };
 
     // Standard release options allow the person running `zig build` to select
@@ -24,9 +24,9 @@ pub fn build(b: *Builder) void {
     vector_obj.setBuildMode(mode);
 
     elf.addObject(vector_obj);
-    elf.setLinkerScriptPath(std.build.FileSource{ .path = "src/linker.ld"});
+    elf.setLinkerScriptPath(std.build.FileSource{ .path = "src/linker.ld" });
 
-    const bin = b.addInstallRaw(elf, "zig-stm32-blink.bin");
+    const bin = b.addInstallRaw(elf, "zig-stm32-blink.bin", .{});
     const bin_step = b.step("bin", "Generate binary file to be flashed");
     bin_step.dependOn(&bin.step);
 

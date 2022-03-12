@@ -1,13 +1,13 @@
 # Zig STM32 Blink
 
-Make LEDs blink on an STM32F4 Discovery board using only Zig (and a linker script).
+Make LEDs blink on an STM32F103xx board using only Zig (and a linker script).
 
 See [my blogpost](https://rbino.com/posts/zig-stm32-blink/) for a more thorough explanation of
 what's going on.
 
 ## Build
 
-The code was tested with Zig `0.7.1` and with Zig `0.8.0-dev.1509+b54514d9d`.
+The code was tested with Zig `0.9.0` and with Zig master.
 
 To build the ELF file just run:
 
@@ -40,7 +40,7 @@ openocd -f board/stm32f4discovery.cfg
 ```
 
 Then from another terminal navigate to the directory containing the ELF output (i.e.
-`zig-cache/bin`) and run:
+`zig-out/bin`) and run:
 
 ```
 gdb-multiarch zig-stm32-blink.elf -ex "target remote :3333"
@@ -54,7 +54,7 @@ load
 
 ## Emulation using `qemu`
 
-If you don't have an STM32F4 Discovery board or you just want to test the code locally, you can use
+If you don't have an STM32F103C8T6 board or you just want to test the code locally, you can use
 [xPack QEMU Arm](https://xpack.github.io/qemu-arm/install/#manual-install). 
 
 *Note*: you have to comment out [this
@@ -64,8 +64,8 @@ in QEMU since it doesn't support the FPU coprocessor yet.
 After that, you can emulate the board with:
 
 ```
-qemu-system-gnuarmeclipse -machine STM32F4-Discovery -mcu STM32F407VG \
-  -kernel zig-cache/bin/zig-stm32-blink.elf -gdb tcp::3333
+qemu-system-gnuarmeclipse -machine STM32F0103 -mcu STM32F0103C8T6 \
+  -kernel zig-out/bin/zig-stm32-blink.elf -gdb tcp::3333
 ```
 
 You should see the blinking LEDs on the board image, and you can connect a `gdb` instance to it (see
